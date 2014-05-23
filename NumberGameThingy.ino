@@ -39,43 +39,53 @@
  */
 
 #include <MeggyJrSimple.h>
-byte board[4][4];
-byte boardold[4][4];
+byte board[4][4];      // The 4x4 array of squares
+byte boardold[4][4];      // Remembers what the array looked like one turn ago for comparison
 
 
 void setup()              
 {
   MeggyJrSimpleSetup();
   Serial.begin(9600);
+  EditColor(1, 10, 0, 0);      // Stretches out the spectrum for longer games
+  EditColor(2, 10, 5, 0);
+  EditColor(3, 5, 10, 0);
+  EditColor(4, 0, 10, 0);
+  EditColor(5, 0, 10, 10);
+  EditColor(6, 0, 0, 10);
+  EditColor(7, 5, 0, 10);
+  EditColor(8, 10, 10, 5);
+  EditColor(9, 15, 10, 5);
+  EditColor(10, 2, 0, 0);
   
-  for (int x = 3; x < 5; x ++)
+  for (int x = 3; x < 5; x ++)      // puts a lone white square in the middle as a title screen
     for (int y = 3; y < 5; y ++)
-      DrawPx(x, y, White);
+      DrawPx(x, y, 9);
   DisplaySlate();
   
-  while (!Button_A)
+  while (!Button_A)      // waits for player input
   {
     CheckButtonsDown();
   }
-  randomSeed(millis());
+  randomSeed(millis());      // randomseeds the game
   
-  reset();
-  SpawnPiece();
-  DisplayBoard();
+  reset();      // initializes the game with one block
+  SpawnPiece();      // adds another block.  Upon restarting, this piece is provided by natural spawning
+  DisplayBoard();      // shows the two blocks
 }
 
 
 void loop()                 
 {
   do
-    CheckButtonsPress();
-  while ((!Button_Right) && (!Button_Left) && (!Button_Up) && (!Button_Down));
+    CheckButtonsPress();      // waits for player input
+  while ((!Button_Right) && (!Button_Left) && (!Button_Up) && (!Button_Down));      // waits for player input
   
-  for (int x = 0; x < 4; x ++)
+  for (int x = 0; x < 4; x ++)      // saves the previous board
     for (int y = 0; y < 4; y ++)
       boardold[x][y] = board[x][y];
   
-  if (Button_Right)
+  if (Button_Right)      // runs 'swipe' methods in the proper direction
     SwipeRight();
   if (Button_Left)
     SwipeLeft();
@@ -84,31 +94,31 @@ void loop()
   if (Button_Down)
     SwipeDown();
     
-  if (Full() && !Moved())
+  if (Full() && !Moved())      // you lose if the screen is full and you cannot find another move
     GameOver();
-  if (Won())
+  if (Won())      // fanfares if there is white
     Victory();
     
-  if (!Full() && Moved())
+  if (!Full() && Moved())      // puts a piece down if there is space and you can still move
     SpawnPiece();
-  DisplayBoard();
-  delay(100);
+  DisplayBoard();      // shows the board
+  delay(100);      // delays to prevent accidental double-taps
 }
 
 
 void SwipeUp()
 {
-  Tone_Start(ToneC4, 100);
+  Tone_Start(ToneC4, 100);      // plays a tone corresponding to the 'up' direction
   
-  for (int i = 0; i < 4; i ++)
-    for (int x = 3; x >= 0; x --)
-      for (int y = 2; y >=0; y --)
-        if (board[x][y+1] == 0)
+  for (int i = 0; i < 4; i ++)      // four times,
+    for (int x = 3; x >= 0; x --)      // for all tiles
+      for (int y = 2; y >=0; y --)      // except for the top ones,
+        if (board[x][y+1] == 0)      // if there is an empty space above it,
         {
-          board[x][y+1] = board[x][y];
+          board[x][y+1] = board[x][y];      // slide the tile up
           board[x][y] = 0;
-          delay(10);
-          DisplayBoard();
+          delay(10);        // and delay and display
+          DisplayBoard();    // for easy animation
         }
         
   for (int x = 3; x >= 0; x --)
@@ -274,6 +284,10 @@ void SpawnPiece()
   }
   while (board[rx][ry]);
   board[rx][ry] = 1;
+  
+  for (int x = 0; x < 2; x ++)
+    for (int y = 0; y < 2; y ++)
+      DrawPx(rx*2+x, ry*2+y, 10);
 }
 
 
@@ -302,7 +316,7 @@ boolean Won()
 {
   for (int x = 0; x < 4; x ++)
     for (int y = 0; y < 4; y ++)
-      if (board[x][y] == 7)
+      if (board[x][y] == 9)
         return true;
   return false;
 }
