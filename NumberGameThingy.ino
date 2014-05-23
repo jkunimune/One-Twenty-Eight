@@ -48,15 +48,15 @@ void setup()
   MeggyJrSimpleSetup();
   Serial.begin(9600);
   EditColor(1, 10, 0, 0);      // Stretches out the spectrum for longer games
-  EditColor(2, 10, 5, 0);
-  EditColor(3, 5, 10, 0);
-  EditColor(4, 0, 10, 0);
-  EditColor(5, 0, 10, 10);
-  EditColor(6, 0, 0, 10);
-  EditColor(7, 5, 0, 10);
-  EditColor(8, 10, 10, 5);
-  EditColor(9, 15, 10, 5);
-  EditColor(10, 2, 0, 0);
+  EditColor(2, 12, 1, 0);
+  EditColor(3, 10, 2, 0);
+  EditColor(4, 0, 8, 0);
+  EditColor(5, 0, 5, 5);
+  EditColor(6, 0, 0, 11);
+  EditColor(7, 7, 0, 10);
+  EditColor(8, 10, 0, 7);
+  EditColor(9, 15, 7, 3);
+  EditColor(10, 1, 0, 0);
   
   for (int x = 3; x < 5; x ++)      // puts a lone white square in the middle as a title screen
     for (int y = 3; y < 5; y ++)
@@ -288,7 +288,8 @@ void SpawnPiece()      // places a red piece on a random dark tile
   for (int x = 0; x < 2; x ++)      // causes the new piece to fade in
     for (int y = 0; y < 2; y ++)
       DrawPx(rx*2+x, ry*2+y, 10);
-  delay(10);
+  DisplaySlate();
+  delay(50);
 }
 
 
