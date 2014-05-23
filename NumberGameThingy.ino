@@ -54,7 +54,7 @@ void setup()
   EditColor(5, 0, 9, 5);
   EditColor(6, 0, 0, 11);
   EditColor(7, 7, 0, 10);
-  EditColor(8, 10, 0, 7);
+  EditColor(8, 10, 0, 5);
   EditColor(9, 15, 7, 3);
   EditColor(10, 1, 0, 0);
   
