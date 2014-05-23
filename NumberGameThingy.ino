@@ -51,7 +51,7 @@ void setup()
   EditColor(2, 12, 1, 0);
   EditColor(3, 10, 2, 0);
   EditColor(4, 0, 8, 0);
-  EditColor(5, 0, 5, 5);
+  EditColor(5, 0, 9, 5);
   EditColor(6, 0, 0, 11);
   EditColor(7, 7, 0, 10);
   EditColor(8, 10, 0, 7);
@@ -289,7 +289,7 @@ void SpawnPiece()      // places a red piece on a random dark tile
     for (int y = 0; y < 2; y ++)
       DrawPx(rx*2+x, ry*2+y, 10);
   DisplaySlate();
-  delay(50);
+  delay(90);
 }
 
 
@@ -334,6 +334,47 @@ boolean Moved()      // does the gameboard look different from when the turn sta
 }
 
 
+byte Score()      // determines the greatest color the player attained.
+{
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 8)
+        return 8;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 7)
+        return 7;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 6)
+        return 6;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 5)
+        return 5;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 4)
+        return 4;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 3)
+        return 3;
+        
+  for (int x = 0; x < 4; x ++)
+    for (int y = 0; y < 4; y ++)
+      if (board[x][y] == 2)
+        return 2;
+        
+  return 1;
+}
+
+
 void GameOver()      // Flashes red and buzzes menacingly
 {                    // (copied from FireballSurvival)
   DisplayBoard();
@@ -348,6 +389,14 @@ void GameOver()      // Flashes red and buzzes menacingly
   delay(500);
   Tone_Start(ToneB2,500);
   delay(500);
+  
+  ClearSlate();
+  for (int x = 3; x < 5; x ++)      // shows the highest color the player attained
+    for (int y = 3; y < 5; y ++)
+      DrawPx(x, y, Score());
+  DisplaySlate();
+  delay(2000);
+  
   reset();
 }
 
