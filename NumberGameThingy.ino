@@ -118,22 +118,22 @@ void SwipeUp()
           board[x][y+1] = board[x][y];      // slide the tile up
           board[x][y] = 0;
           delay(10);        // and delay and display
-          DisplayBoard();    // for easy animation
+          DisplayBoard();    // for easy animation.
         }
         
-  for (int x = 3; x >= 0; x --)
-    for (int y = 2; y >=0; y --)
+  for (int x = 3; x >= 0; x --)      // for all tiles
+    for (int y = 2; y >=0; y --)      // except for the top ones,
       if (board[x][y])
-        if (board[x][y+1] == board[x][y])
+        if (board[x][y+1] == board[x][y])      // if the color is non-zero and matches the one above it,
         {
-          board[x][y+1] ++;
+          board[x][y+1] ++;      // combine them to form the next color
           board[x][y] = 0;
-          delay(10);
-          DisplayBoard();
+          delay(10);          // and delay and display
+          DisplayBoard();      // for easy animation.
         }
         
-/*  for (int i = 0; i < 4; i ++)
-    for (int x = 3; x >= 0; x --)
+/*  for (int i = 0; i < 4; i ++)      // this alters the mechanics slightly,
+    for (int x = 3; x >= 0; x --)      // but apparently deviates from the actual game.
       for (int y = 2; y >=0; y --)
         if (board[x][y+1] == 0)
         {
@@ -145,7 +145,7 @@ void SwipeUp()
 }
 
 
-void SwipeDown()
+void SwipeDown()      // same thing but down
 {
   Tone_Start(ToneG4, 100);
   
@@ -184,7 +184,7 @@ void SwipeDown()
 }
 
 
-void SwipeLeft()
+void SwipeLeft()      // same thing but left
 {
   Tone_Start(ToneE4, 100);
   
@@ -223,7 +223,7 @@ void SwipeLeft()
 }
 
 
-void SwipeRight()
+void SwipeRight()      // same thing but right
 {
   Tone_Start(ToneF4, 100);
   
@@ -262,8 +262,8 @@ void SwipeRight()
 }
 
 
-void reset()
-{
+void reset()      // initializes the game with one piece.  A second piece will
+{                 // usally appear by natural spawning.
   for (int x = 0; x < 4; x ++)
     for (int y = 0; y < 4; y ++)
       board[x][y] = 0;
@@ -273,7 +273,7 @@ void reset()
 }
 
 
-void SpawnPiece()
+void SpawnPiece()      // places a red piece on a random dark tile
 {
   int rx;
   int ry;
@@ -285,16 +285,17 @@ void SpawnPiece()
   while (board[rx][ry]);
   board[rx][ry] = 1;
   
-  for (int x = 0; x < 2; x ++)
+  for (int x = 0; x < 2; x ++)      // causes the new piece to fade in
     for (int y = 0; y < 2; y ++)
       DrawPx(rx*2+x, ry*2+y, 10);
+  delay(10);
 }
 
 
 void DisplayBoard()
 {
-  for (int x = 0; x < 4; x ++)
-    for (int y = 0; y < 4; y ++)
+  for (int x = 0; x < 4; x ++)        // translates the gameboard to the gameslate
+    for (int y = 0; y < 4; y ++)      // and displays
       for (int w = 0; w < 2; w ++)
         for (int h = 0; h < 2; h ++)
           DrawPx(x*2+w, y*2+h, board[x][y]);
@@ -302,7 +303,7 @@ void DisplayBoard()
 }
 
 
-boolean Full()
+boolean Full()      // is the screen full?
 {
   for (int x = 0; x < 4; x ++)
     for (int y = 0; y < 4; y ++)
@@ -312,7 +313,7 @@ boolean Full()
 }
 
 
-boolean Won()
+boolean Won()      // have you made white?
 {
   for (int x = 0; x < 4; x ++)
     for (int y = 0; y < 4; y ++)
@@ -322,8 +323,8 @@ boolean Won()
 }
 
 
-boolean Moved()
-{
+boolean Moved()      // does the gameboard look different from when the turn started?
+{                    // or did nothing happen?
   for (int x = 0; x < 4; x ++)
     for (int y = 0; y < 4; y ++)
       if (board[x][y] != boardold[x][y])
@@ -332,8 +333,8 @@ boolean Moved()
 }
 
 
-void GameOver()
-{
+void GameOver()      // Flashes red and buzzes menacingly
+{                    // (copied from FireballSurvival)
   DisplayBoard();
   delay(200);
   for(int i=0;i<8;i++)
@@ -350,8 +351,8 @@ void GameOver()
 }
 
 
-void Victory()
-{
+void Victory()      // Flashes green and fanfares
+{                   // (copied from FireballSurvival)
   DisplayBoard();
   delay(500);
   for(int i=0;i<8;i++)
